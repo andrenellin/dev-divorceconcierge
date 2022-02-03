@@ -7,7 +7,11 @@
  * Description: Generate PDF Document for Divorce Concierge, Statement of Insurance Availability
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
+<<<<<<< HEAD
  * Group: 2. Awaiting Layout Approval
+=======
+ * Group: 1. Development
+>>>>>>> 5351f87d1c8dec092ebd64ca2261a4b08f0dd955
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields
