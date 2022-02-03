@@ -7,7 +7,7 @@
  * Description: A print-friendly template displaying the Child Support Setup Form
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 2. Awaiting Layout Approval
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields

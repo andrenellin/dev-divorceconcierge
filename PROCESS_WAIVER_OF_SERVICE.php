@@ -7,7 +7,7 @@
  * Description: A print-friendly template displaying the Waiver of Service
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 7. Live Server Testing
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields

@@ -1,16 +1,23 @@
 <?php
 
 /*
- * Template Name: Petition for Divorce Agreement (No Children) New
+ * Template Name: Petition for Divorce Agreement (With Children) TOMS ONE
  * Version: 1.0.0
  * Description: A print-friendly template displaying the Petition for Divorce
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 0. Sort
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields
  */
+
+/*
+ *  Styles
+ *  Header/Footer
+ *  Variables
+ *  Output
+ * */
 
 /* Prevent direct access to the template */
 if (!class_exists('GFForms')) {
@@ -21,6 +28,9 @@ if (!class_exists('GFForms')) {
  * Load our template-specific settings
  */
 $show_meta_data = !empty($settings['world_show_meta_data']) ? $settings['world_show_meta_data'] : 'No';
+
+$upload_dir = wp_get_upload_dir();
+$upload_base_dir = $upload_dir['baseurl'];
 ?>
 
 <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
@@ -162,20 +172,25 @@ li {
 /* *********************************************************************
  * VARIABLES
  ******************************************************************** */
-// $client_user_id = $form_data['misc']['created_by'];
+// CLIENT DETAILS
+$client_user_id = rgar($entry, 'created_by');
 
 // IN THE MATTER OF / PARTIES
-$petitioner = $form_data['field'][96]; // [3.PETITIONER: Full Name]
+$petitioner = $form_data['field'][3]; // [3.PETITIONER: Full Name]
 $petitioner_uppercase = strtoupper($petitioner);
-$respondent = $form_data['field'][114]; // [4.RESPONDENT: Full Name]
+$respondent = $form_data['field'][4]; // [4.RESPONDENT: Full Name]
 $respondent_uppercase = strtoupper($respondent);
 
 $county = strtoupper($form_data['field'][6]); // [6.County]
 
 // 1 MARITAL ESTATE VALUE
 $marital_estate_value_greater_than_250k = $form_data['field'][10]; // [10.Marital Estate Value]
+if ($marital_estate_value_greater_than_250k == 'Yes') {
+    $discovery_level_paragraph = "Discovery in this case is intended to be conducted under level 2 of rule 190 of the Texas Rules of Civil Procedure.  No children are involved in this divorce case, and the value of the marital estate is more than zero but not more than $250,000.";
 
-    $discovery_level_paragraph = "Discovery in this case is intended to be conducted under level 2 of rule 190 of the Texas Rules of Civil Procedure. ";
+} else {
+    $discovery_level_paragraph = "Discovery in this case is intended to be conducted under level 2 of rule 190 of the Texas Rules of Civil Procedure.";
+}
 
 // 2 PARTIES
 
@@ -200,6 +215,8 @@ if ($residence_stay_together == 'No') {
 } else {
     $date_of_separation_content = 'the date of the filing of this Original Petition for Divorce';
 }
+
+// 8 CHILDREN OF THE MARRIAGE
 
 $repeater_children_form_id = 14;
 $repeater_children_search_criteria['field_filters'][] = array('key' => 'created_by', 'value' => $client_user_id);
@@ -228,7 +245,6 @@ for ($i = 0; $i < $count_children_entries; $i++) {
     // print_r($children[$i]);
     // echo '<br></pre>';
 }
-
 
 // 10 NAME CHANGE
 
@@ -291,30 +307,24 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
   <tr class="paragraph">
     <td class="column_third_half"><span class="bs_bold"><?php echo $petitioner_uppercase; ?></span></td>
     <td class="column_middle_third"><span class="bs_bold"></span>&sect; </td>
-    <td class="column_right_third"><span class="bs_bold"> _______ JUDICIAL DISTRICT</span></td>
+    <td class="column_right_third"><span class="bs_bold">&nbsp;</span></td>
   </tr>
   <tr class="paragraph">
     <td class="column_third_half"><span class="bs_bold">AND</span></td>
     <td class="column_middle_third"><span class="bs_bold"></span>&sect; </td>
-    <td class="column_right_third"><span class="bs_bold">&nbsp;</span></td>
+    <td class="column_right_third"><span class="bs_bold"> _______ JUDICIAL DISTRICT</span></td>
   </tr>
   <tr class="paragraph">
     <td class="column_third_half"><span class="bs_bold"><?php echo $respondent_uppercase; ?></span></td>
     <td class="column_middle_third"><span class="bs_bold"></span>&sect; </td>
-    
-    <?php if($count_children_entries === 0){
-
-    echo    ' <td class="column_right_third"><span class="bs_bold">' . $county .' COUNTY, TEXAS</span></td>';
-
-    }else if($count_children_entries > 0){
-
-      echo  '<td class="column_right_third"><span class="bs_bold">&nbsp;</span></td>';
-
-
-    } ?>
-    
+    <td class="column_right_third"><span class="bs_bold"></span></td>
   </tr>
 
+      <tr class="paragraph">
+    <td class="column_third_half"><span class="bs_bold"></span></td>
+    <td class="column_middle_third"><span class="bs_bold"></span>&sect; </td>
+    <td class="column_right_third"><span class="bs_bold"></span></td>
+  </tr>
 
 
     <?php if($count_children_entries > 1){
@@ -322,8 +332,8 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
     <td class="column_third_half"><span class="bs_bold">AND IN THE INTEREST OF</span></td>
     <td class="column_middle_third"><span class="bs_bold"></span>&sect; </td>
     <td class="column_right_third"><span class="bs_bold"></span></td>
-  </tr>';
-  } ?>
+  </tr>'
+  ?>}
 
 
   
@@ -376,7 +386,8 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
 
     }
     
-    ?> 
+    ?></span>
+    
  
 </table>
 <br>
@@ -417,6 +428,7 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
 <table>
   <tr class="paragraph">
     <td class="section_number"><span class="bs_italic bs_bold">3. </span></td>
+    <td class="section-heading"><span class="bs_italic bs_bold">Domicile</span></td>
     <td class="section-heading"><span class="bs_italic bs_bold">Domicile</span></td>
   </tr>
 </table>
@@ -483,7 +495,7 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
   relationship and
   prevents any reasonable expectation of reconciliation.
 </div>
-
+<pagebreak />
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 <!-- 8 CHILDREN OF MARRIAGE -->
 <table>
@@ -493,17 +505,39 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
   </tr>
 </table>
 
-<div class="section_content paragraph indent-paragraph">There is no child born or adopted of this marriage, and none is
-  expected.
-</div>
+<?php
+for ($i = 0; $i < $count_children_entries; $i++) {?>
+<table>
+  <tr class="indent-paragraph"> <!--- "&nbsp;" is code for a tab ---->
+    <td class="indent-paragraph"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name: <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" . $children[$i]['full_name']; ?></td>
+  </tr>
+  <tr class="indent-paragraph">
+    <td class="indent-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sex: <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .  $children[$i]['gender']; ?></td>
+    </tr>
+  <tr class="indent-paragraph">
+    <td class="indent-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Birthdate: <?php echo "&nbsp;&nbsp;" .  $children[$i]['birth_date']; ?></td>
+  </tr>
+  <tr class="indent-paragraph">
+    <td class="indent-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Social Security Number: Exchanged Privately</td>
+  </tr>
+  <?php if ($children[$i]['has_dl'] == 'Yes') {?>
+  <tr class="indent-paragraph">
+    <td class="indent-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Drivers License: Exchanged Privately</td>
+  </tr>
+  <?php }?>
+  <!-- CLOSE IF STATEMENT -->
+</table>
+<br>
+<?php }?>
+<!-- CLOSE COUNTER -->
+
+
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
 <!-- PAGE 3 -->
 <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-
-
 
 <!-- 9 DIVISION OF COMMUNITY OF PROPERTY -->
 <table>
@@ -512,7 +546,8 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
     <td class="section-heading"><span class="bs_italic bs_bold">Division of Community Property</span></td>
   </tr>
 </table>
-<div class="section_content paragraph indent-paragraph">Petitioner believes Petitioner and Respondent will enter into an
+<div class="section_content paragraph indent-paragraph">Petitioner believes Petitioner and Respondent will enter into
+  an
   agreement
   for the division of their estate. If such an agreement is made, Petitioner requests the Court to approve the
   agreement and divide their estate in a manner consistent with the agreement. If such an agreement is not made,
@@ -524,7 +559,7 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
 
 <!-- 10 REQUEST FOR NAME CHANGE IF YES -->
 <!-- php start -->
-<?php if ($name_change_requested == "Yes") { ?>
+<?php if ($name_change_requested == "Yes") {?>
 <!-- php pause -->
 <table>
   <tr class="paragraph">
@@ -536,13 +571,13 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
   <?php echo $name_change_to ?></div>
 
 <!-- php resume -->
-<?php } ?>
+<?php }?>
 <!-- php end -->
-
+<pagebreak />
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 <!-- 10 or 11 PRAYER -->
 <!-- php start -->
-<?php if ($name_change_requested == "No") { ?>
+<?php if ($name_change_requested == "No") {?>
 <!--php pause  -->
 <table>
   <tr class="paragraph">
@@ -552,14 +587,15 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
 </table>
 
 <!-- php resume -->
-<?php } ?>
+<?php }?>
 <!-- php end -->
 
 
-<!-- php start -->
-<?php if ($name_change_requested == "Yes") { ?>
-<!--php pause  -->
 
+
+<!-- php start -->
+<?php if ($name_change_requested == "Yes") {?>
+<!--php pause  -->
 <table>
   <tr class="paragraph">
     <td class="section_number"><span class="bs_italic bs_bold">11. </span></td>
@@ -567,88 +603,26 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
   </tr>
 </table>
 <!-- php resume -->
-<?php } ?>
+<?php }?>
 <!-- php end -->
+
 
 <div class="section_content paragraph indent-paragraph">Petitioner prays that citation and notice issue as required by
   law and
   that the Court grant a divorce and all other relief requested in this petition.</div>
-<?php if ($name_change_requested == "Yes") { ?>
-<div class="section_content paragraph indent-paragraph">Petitioner prays that Petitioner's name be changed as requested
+<?php if ($name_change_requested == "Yes") {?>
+<div class="section_content paragraph indent-paragraph">Petitioner prays that Petitioner's name be changed as
+  requested
   above.
 </div>
-<?php } ?>
+<?php }?>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <!-- SIGNATURE IF MEMBERSHIP is DIVORCE YOUR WAY FAMILY -->
 <?php if ($membership_type == 'DYW') {
     ?>
-<div class="height_max"></div>
-<table class="SIGNATURES">
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">Respectfully submitted,</td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">&nbsp;</td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner; ?></td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner_street_1; ?></td>
-  </tr>
-
-  <?php if ($petitioner_street_2 != '') { ?>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner_street_2; ?></td>
-  </tr>
-
-  <?php } ?>
-
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner_city; ?>, Texas, <?php echo $petitioner_zip; ?></td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner_phone; ?></td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third"><?php echo $petitioner_email; ?></td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">&nbsp;</td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">By: <span class="text_underline bs_italic"> /s/ <?php echo $petitioner; ?></span>
-    </td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $petitioner; ?></td>
-  </tr>
-  <tr class="paragraph">
-    <td class="column_third_half">&nbsp;</td>
-    <td class="column_right_third">&nbsp;&nbsp;&nbsp;&nbsp;PRO SE</td>
-  </tr>
-</table>
-
-<?php } ?>
-
-<!-- SIGNATURE IF MEMBERSHIP is DIVORCE BY US FAMILY -->
-
-<?php if ($membership_type == 'DBU') {
-    ?>
-    <pagebreak />
+<pagebreak ?>
   <div class="height_max"></div>
   <table class="SIGNATURES">
     <tr class="paragraph">
@@ -661,27 +635,32 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">DIVORCE CONCIERGE PLLC</td>
+      <td class="column_right_third"><?php echo $petitioner; ?></td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">8951 Collin-McKinney Parkway Suite 1403</td>
+      <td class="column_right_third"><?php echo $petitioner_street_1; ?></td>
+    </tr>
+
+    <?php if ($petitioner_street_2 != '') {?>
+    <tr class="paragraph">
+      <td class="column_third_half">&nbsp;</td>
+      <td class="column_right_third"><?php echo $petitioner_street_2; ?></td>
+    </tr>
+
+    <?php }?>
+
+    <tr class="paragraph">
+      <td class="column_third_half">&nbsp;</td>
+      <td class="column_right_third"><?php echo $petitioner_city; ?>, Texas, <?php echo $petitioner_zip; ?></td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">McKinney, Texas, 75070</td>
+      <td class="column_right_third"><?php echo $petitioner_phone; ?></td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">Phone: 972-562-9890</td>
-    </tr>
-    <tr class="paragraph">
-      <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">Fax: 972-377-8392</td>
-    </tr>
-    <tr class="paragraph">
-      <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">Email: service@ramagelawfirm.com</td>
+      <td class="column_right_third"><?php echo $petitioner_email; ?></td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
@@ -689,30 +668,93 @@ $petitioner_email = $form_data['field'][40]; // [40.Petitioner Email]
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">By: ________________________________</td>
+      <td class="column_right_third">By: <span class="text_underline bs_italic"> /s/ <?php echo $petitioner; ?></span>
+      </td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">SHARON M. RAMAGE</td>
+      <td class="column_right_third">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $petitioner; ?></td>
     </tr>
     <tr class="paragraph">
       <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">SBOT: 13740100</td>
-    </tr>
-    <tr class="paragraph">
-      <td class="column_third_half">&nbsp;</td>
-      <td class="column_right_third">ATTORNEY FOR PETITIONER</td>
+      <td class="column_right_third">&nbsp;&nbsp;&nbsp;&nbsp;PRO SE</td>
     </tr>
   </table>
-  <?php } ?>
 
-  <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-  <!-- PAGE 4 -->
-  <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-  <?php
+  <?php }?>
+
+  <!-- SIGNATURE IF MEMBERSHIP is DIVORCE BY US FAMILY -->
+
+  <?php if ($membership_type == 'DBU') {
+    ?>
+  <pagebreak ?>
+    <div class="height_max"></div>
+    <table class="SIGNATURES">
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">Respectfully submitted,</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">&nbsp;</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">THE RAMAGE LAW GROUP</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">8951 Collin-McKinney Parkway</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">Suite 1403</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">McKinney, Texas, 75070</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">Phone: 972-562-9890</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">Fax: 972-377-8392</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">Email: service@ramagelawfirm.com</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">&nbsp;</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">By: ________________________________</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">SHARON M. RAMAGE</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">SBOT: 13740100</td>
+      </tr>
+      <tr class="paragraph">
+        <td class="column_third_half">&nbsp;</td>
+        <td class="column_right_third">ATTORNEY FOR PETITIONER</td>
+      </tr>
+    </table>
+    <?php }?>
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <!-- PAGE 4 -->
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <?php
 if ($county == 'COLLIN') {
-    $upload_dir = wp_get_upload_dir();
-    $upload_base_dir = $upload_dir['baseurl'];
+
     $standing_order_collin_county = $upload_base_dir . '/gravity_forms/standing_orders/collin_county';
     $standing_order_collin_county_page_1 = $standing_order_collin_county . '/Standing_Order-Collin_County-page_1-exhibit_a.jpg';
     $standing_order_collin_county_page_2 = $standing_order_collin_county . '/Standing_Order-Collin_County-page_2.jpg';
@@ -720,22 +762,21 @@ if ($county == 'COLLIN') {
     $standing_order_collin_county_page_4 = $standing_order_collin_county . '/Standing_Order-Collin_County-page_4.jpg';
     $standing_order_collin_county_page_5 = $standing_order_collin_county . '/Standing_Order-Collin_County-page_5.jpg';
     ?>
-  <pagebreak page-selector="standing-order" />
-  <bookmark content="Exhibit A: Collin County Standing Orders" />
-  <div id="a"></div>
-  <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_1 ?>" />
-  <pagebreak page-selector="standing-order" />
-  <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_2 ?>" />
-  <pagebreak page-selector="standing-order" />
-  <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_3 ?>" />
-  <pagebreak page-selector="standing-order" />
-  <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_4 ?>" />
-  <pagebreak page-selector="standing-order" />
-  <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_5 ?>" />
-  <?php }
+    <pagebreak page-selector="standing-order" />
+    <bookmark content="Exhibit A: Collin County Standing Orders" />
+    <div id="a"></div>
+    <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_1 ?>" />
+    <pagebreak page-selector="standing-order" />
+    <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_2 ?>" />
+    <pagebreak page-selector="standing-order" />
+    <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_3 ?>" />
+    <pagebreak page-selector="standing-order" />
+    <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_4 ?>" />
+    <pagebreak page-selector="standing-order" />
+    <img class="image-standing_order" src="<?php echo $standing_order_collin_county_page_5 ?>" />
+    <?php }
 
-
-  /* DALLAS COUNTY ------------------------------------------------------*/
+/* DALLAS COUNTY ------------------------------------------------------*/
 if ($county == 'DALLAS') {
     $standing_order_dallas_county = $upload_base_dir . '/gravity_forms/standing_orders/dallas_county';
     $standing_order_dallas_county_page_1 = $standing_order_dallas_county . '/Standing_Order-Dallas_County-page_1.jpg';
@@ -921,4 +962,5 @@ if ($county == 'ROCKWALL') {
     <pagebreak page-selector="standing-order" />
     <img class="image-standing_order" src="<?php echo $standing_order_rockwall_county_page_5 ?>" />
     <?php }
-  ?>
+
+    }

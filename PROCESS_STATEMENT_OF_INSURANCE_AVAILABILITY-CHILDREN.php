@@ -2,12 +2,12 @@
 <?php
 
 /*
- * Template Name: Insurance Availability With Petition
+ * Template Name: Statement of Insurance Availability [Condition: Children]
  * Version: 1.0.1
  * Description: A print-friendly template displaying the Insurance availibility form/
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 1. Development
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields

@@ -7,7 +7,7 @@
  * Description: A print-friendly template displaying the Possesion scehdule for alternating weekends
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 0. Sort
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields
@@ -309,13 +309,13 @@ IT IS ORDERED that each conservator shall comply with all terms and conditions o
 <div class="indent-paragraph-text" > 5. Personal Effects&ndash;Each conservator is ORDERED to return with the child the personal effects that the child brought at the beginning of the period of possession.
 </div>
 
-<div class="indent-paragraph-text" > 6. Designation of Competent Adult&ndash;Each conservator may designate any competent adult to pick up and return the child, as applicable. IT IS ORDERED that a conservator or a designated competent adult be present when’ the child is picked up or returned.
+<div class="indent-paragraph-text" > 6. Designation of Competent Adult&ndash;Each conservator may designate any competent adult to pick up and return the child, as applicable. IT IS ORDERED that a conservator or a designated competent adult be present whenï¿½ the child is picked up or returned.
 </div>
 
 <div class="indent-paragraph-text" > 7.Inability to Exercise Possession&ndash;Each conservator is ORDERED to give as much advance notice as possible to the person in possession of the child on each occasion that the conservator will be unable to exercise that conservator&#39;s right of possession for any specified period.
 </div>
 
-<div class="indent-paragraph-text" > 8. Written Notice–Written notice shall be deemed to have been timely made if received or postmarked before or at the time that notice is due.
+<div class="indent-paragraph-text" > 8. Written Noticeï¿½Written notice shall be deemed to have been timely made if received or postmarked before or at the time that notice is due.
 </div>
 
 <div class="indent-paragraph-text" > 9. Telephone Access- Each parent shall be allowed reasonable telephone access with the child when the child is in the possession of the other parent.  Reasonable is considered one telephone call per day for a duration not to exceed approximately ten minutes.

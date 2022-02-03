@@ -7,7 +7,7 @@
  * Description: A print-friendly template displaying the final decree of divorce, created 26/01/2022
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: Bliksem
+ * Group: 0. Sort
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields

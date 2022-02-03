@@ -6,7 +6,7 @@
  * Description: A print-friendly template displaying the Final Decree of Divorce
  * Author: Bliksem LLC
  * Author URI: https://simplifysmallbiz.com
- * Group: TexasDivorceSource
+ * Group: 0. Sort
  * License: GPLv2
  * Required PDF Version: 4.0-alpha
  * Tags: Header, Footer, Background, Optional HTML Fields, Optional Page Fields

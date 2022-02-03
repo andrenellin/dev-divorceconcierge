@@ -6,7 +6,7 @@
  * Description: Overlaying the record of support document
  * Author:
  * Author URI:
- * Group: Custom
+ * Group: 2. Awaiting Layout Approval
  * Required PDF Version: 4.4.0
  * Toolkit: true
  */
@@ -24,7 +24,7 @@ if (!class_exists('GFForms')) {
  * @var array  $form_data The processed entry data stored in an array
  * @var object $settings  The current PDF configuration
  * @var array  $fields    An array of Gravity Form fields which can be accessed with their ID number
- * @var array  $config    The initialised template config class – eg. /config/zadani.php
+ * @var array  $config    The initialised template config class � eg. /config/zadani.php
  * @var object $gfpdf     The main Gravity PDF object containing all our helper classes
  * @var array  $args      Contains an array of all variables - the ones being described right now - passed to the template
  */
@@ -258,7 +258,6 @@ $w->add($child1Sex, [72, 176, 20, 7]); /* html, [x, y, w, h] */
 $w->add($child1BirthPlace, [95, 176, 110, 7]); /* html, [x, y, w, h] */
 
 // 19e. Prior name of child (First, Middle, Last, Suffix) NOT NEEDED?
-
 // CHILD 2
 // Variables
 $child2Name = 'Name Child Two'; // Tell Us About Your Child(ren)
