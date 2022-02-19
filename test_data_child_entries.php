@@ -3,6 +3,17 @@
 This form contains dummy data that mimics an enquiry to the Child Repeater Form
  */
 
+/* QUERY
+$form_id = 88;
+$client_user_id = rgar($entry, 'created_by');
+
+$search_criteria['field_filters'][] = array( 'key' => 'created_by', 'value' => $client_user_id );
+$search_criteria['field_filters'][] = array( 'key' => '2', 'value' => 'Vehicles' );
+$sorting = array( 'key' => $sort_field, 'direction' => 'ASC', 'is_numeric' => true );
+
+$assets_vehicles_joint_entries = GFAPI::get_entries( $form_id, $search_criteria, $sorting );
+ */
+
 $children_entries = array(); // Tell Us About Your Child(ren)
 
 // Child 1 if exists Full Name

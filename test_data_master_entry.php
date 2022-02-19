@@ -2,10 +2,21 @@
 /*
 This file contains dummy data to mimic an enquiry to a Master Form entry for a client
  */
-// TEMPLATE
-// $master_entries[0][] = ''; //
 
-// Get data from master
+/* QUERY
+$form_id = 88;
+$client_user_id = rgar($entry, 'created_by');
+
+$search_criteria['field_filters'][] = array( 'key' => 'created_by', 'value' => $client_user_id );
+$search_criteria['field_filters'][] = array( 'key' => '2', 'value' => 'Vehicles' );
+$sorting = array( 'key' => $sort_field, 'direction' => 'ASC', 'is_numeric' => true );
+
+$assets_vehicles_joint_entries = GFAPI::get_entries( $form_id, $search_criteria, $sorting );
+ */
+
+// TEMPLATE
+// $client_user_id = rgar($entry, 'created_by');
+// $master_entries[0][] = ''; //
 
 // For Testing Purposes
 $master_entries = array();
@@ -100,7 +111,7 @@ $master_entries[0][103] = 'Texas'; // Drivers license State
 $master_entries[0][7001] = '999-999-9992'; // Petitioner phone home
 $master_entries[0][7003] = 'White'; // Petitioner Race
 $master_entries[0][7200]['last'] = 'Parker'; // Petitioner Race
-// Birth Details
+// Petitioner Birth Details
 $master_entries[0][7002]['city'] = 'Riverton';
 $master_entries[0][7002]['state'] = 'Utah';
 $master_entries[0][7002]['country'] = 'United States';
@@ -110,13 +121,13 @@ $master_entries[0][38]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][38]['city'] = 'Prosper'; // Address residence
 $master_entries[0][38]['state'] = 'Texas'; // Address residence
 $master_entries[0][38]['zip'] = '75078'; // Address residence
-// Address mailing
+// Petitioner Address mailing
 $master_entries[0][106]['street'] = '321 Petitioner Mailing Street'; // Address residence
 $master_entries[0][106]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][106]['city'] = 'Plano'; // Address residence
 $master_entries[0][106]['state'] = 'Texas'; // Address residence
 $master_entries[0][106]['zip'] = '75078'; // Address residence
-// Employment
+// Petitioner Employment
 $master_entries[0][230] = 'Yes'; // Petitioner employed?
 $master_entries[0][231] = 'Petitioner Employer Inc'; // Petitioner employer
 $master_entries[0][100] = '999-999-9993'; // Petitioner phone work
@@ -138,23 +149,23 @@ $master_entries[0][120] = 'DL222222222'; // Drivers license number
 $master_entries[0][121] = 'Texas'; // Drivers license State
 $master_entries[0][6003] = 'Black'; // Drivers license State
 $master_entries[0][6200] = 'Riverton'; // Respondent Maiden Name
-// Birth Details
+// RESPONDENT Birth Details
 $master_entries[0][6002]['city'] = 'Krugersdorp';
 $master_entries[0][6002]['state'] = 'Gauteng';
 $master_entries[0][6002]['country'] = 'South Africa';
-// Address Residence
+// RESPONDENT Address Residence
 $master_entries[0][125]['street'] = '321 Respondent Street'; // Address residence
 $master_entries[0][125]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][125]['city'] = 'Prosper'; // Address residence
 $master_entries[0][125]['state'] = 'Texas'; // Address residence
 $master_entries[0][125]['zip'] = '75078'; // Address residence
-// Address mailing
+// RESPONDENT Address mailing
 $master_entries[0][72]['street'] = '321 Respondent Mailing Street'; // Address residence
 $master_entries[0][72]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][72]['city'] = 'Prosper'; // Address residence
 $master_entries[0][72]['state'] = 'Texas'; // Address residence
 $master_entries[0][72]['zip'] = '75078'; // Address residence
-// Employment
+// RESPONDENT Employment
 $master_entries[0][281] = 'Yes '; // Employed?
 $master_entries[0][282] = 'Respondent Employer Inc'; // Emplyer name
 $master_entries[0][118] = '888-888-8883'; // Phone work

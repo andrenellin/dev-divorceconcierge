@@ -307,7 +307,6 @@ $children_entries[3][8] = ''; // Drivers license State
 
 /* -------------------------------------------------------------------------------------------- */
 /* Load PDF Styles */
-/*  */
 $w->beginStyles();
 ?>
 <style>

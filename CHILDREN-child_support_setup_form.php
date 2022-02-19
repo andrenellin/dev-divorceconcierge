@@ -548,8 +548,10 @@ table.table_children_involved td {
 
 <body>
 
-  <!-- ------------------------------------------------------------------------------------------------ -->
-  <!-- Header / Footer -->
+  <!-- -------------------------------------------------------------------------------------------- -->
+  <!-- HEADER / FOOTER -->
+  <!-- Variables: NONE -->
+  <!-- Output -->
   <htmlpagefooter name="MyCustomFooter">
     <table class="footer">
       <tr class="bs_font_size_normal">
@@ -560,14 +562,7 @@ table.table_children_involved td {
     </table>
   </htmlpagefooter>
 
-  <!-- STYLES END -->
 
-  <!-- ------------------------------------------------------------------------------------------------ -->
-  <!-- TESTING -->
-
-  <?php
-// echo 'TEST: ' . $master_entries[0][114]['middle'];
-?>
   <!-- ------------------------------------------------------------------------------------------------ -->
   <!-- Bookmark -->
 
