@@ -24,14 +24,19 @@ if (!class_exists('GFForms')) {
 $show_meta_data = !empty($settings['world_show_meta_data']) ? $settings['world_show_meta_data'] : 'No';
 
 /* -------------------------------------------------------------------------------------------- */
-/* GLOBAL VARIABLES */
+/* DATABASE QUERY: Form Name */
+
+/* Code to Query */
 // $client_user_id = $form_data'misc''created_by';
-$selectOption = 'X';
-$leaveBlank = '&nbsp;';
-$currentdate = date('F d, Y');
+// $X_form_id = 14;
+// $X_search_criteria['field_filters'][] = array('key' => 'created_by', 'value' => $client_user_id);
+// $X_search_criteria['status'] = 'active';
+// $X_sorting = array('key' => 'id', 'direction' => 'ASC', 'is_numeric' => true);
+// $X_entries = GFAPI::get_entries($X_form_id, $X_search_criteria, $X_sorting);
 
 /* -------------------------------------------------------------------------------------------- */
-/* QUERY: Master */
+/* MODEL OF OUTPUT: MASTER */
+
 // Deed Of Trust Date of Filing
 
 // Petitioner Full Name
@@ -39,7 +44,7 @@ $master_entries[0][96]['first'] = 'Peter'; // Petitioner Full Name
 $master_entries[0][96]['middle'] = 'Paul'; // Petitioner Full Name
 $master_entries[0][96]['last'] = 'Parker'; // Petitioner Full Name
 // Petitioner Mailing Address Inline
-$master_entries[0][106]['street'] = '321 Petitioner Mailing Street'; // Address residence
+$master_entries[0][106]['street'] = '321 Petitioner Mailing Str'; // Address residence
 $master_entries[0][106]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][106]['city'] = 'Plano'; // Address residence
 $master_entries[0][106]['state'] = 'Texas'; // Address residence
@@ -52,7 +57,7 @@ $master_entries[0][114]['middle'] = 'Rochelle'; // Respondent full name
 $master_entries[0][114]['last'] = 'Parker'; // Respondent full name
 
 // Respondent Mailing Address Inline
-$master_entries[0][72]['street'] = '321 Respondent Mailing Street'; // Address residence
+$master_entries[0][72]['street'] = '321 Respondent Mailing Str'; // Address residence
 $master_entries[0][72]['street2'] = 'Apt 321'; // Address residence
 $master_entries[0][72]['city'] = 'Prosper'; // Address residence
 $master_entries[0][72]['state'] = 'Texas'; // Address residence
@@ -77,7 +82,7 @@ $joint_property_entries[0][3002]['middle'] = 'Theral';
 $joint_property_entries[0][3002]['last'] = 'Thanus';
 
 // Trustee Mailing Address Inline
-$joint_property_entries[0][3003]['street'] = '999 Trustee Mailing Street';
+$joint_property_entries[0][3003]['street'] = '999 Trustee Mailing Str';
 $joint_property_entries[0][3003]['street2'] = 'STE 999';
 $joint_property_entries[0][3003]['city'] = 'Terrell';
 $joint_property_entries[0][3003]['state'] = 'Texas';
@@ -100,7 +105,7 @@ $joint_property_entries[0][3007] = 'Both';
 $joint_property_entries[0][3008] = 'Collin';
 
 // Property Address
-$joint_property_entries[0][3009]['street'] = '123 Property Street';
+$joint_property_entries[0][3009]['street'] = '123 Property Str';
 $joint_property_entries[0][3009]['street2'] = '';
 $joint_property_entries[0][3009]['city'] = 'Plano';
 $joint_property_entries[0][3009]['state'] = 'Texas';
@@ -125,7 +130,13 @@ $joint_property_entries[0][3010] = 'TRAILS OF FOSSIL CREEK PH I B LOCK GG LOT 15
 // County where deed is recorded [List, Other: Other]
 
 /* -------------------------------------------------------------------------------------------- */
-/* VARIABLES GENERAL: used for script logic */
+/* GLOBAL VARIABLES: used throughout script. Not specific to a section */
+
+$selectOption = 'X';
+$leaveBlank = '&nbsp;';
+$currentdate = date('F d, Y');
+
+/* -------------------------------------------------------------------------------------------- */
 // Petitioner Full Name
 $petitionerNameFirst = strtoupper($master_entries[0][96]['first']);
 $petitionerNameMiddle = strtoupper($master_entries[0][96]['middle']);
@@ -135,7 +146,7 @@ if ($petitionerNameMiddle == '') {
 } else {
     $petitionerNameFull = $petitionerNameFirst . ' ' . $petitionerNameMiddle . ' ' . $petitionerNameLast;
 }
-
+/* -------------------------------------------------------------------------------------------- */
 // Respondent Full Name
 $respondentNameFirst = strtoupper($master_entries[0][114]['first']);
 $respondentNameMiddle = strtoupper($master_entries[0][114]['middle']);
@@ -240,6 +251,11 @@ ol.alphalowercase {
 
 
 /* TABLES */
+.table_cell_top_line {
+  border-top: 1px solid;
+}
+
+
 .table_footer_col_1_2 {
   width: 79%;
 }
@@ -249,12 +265,22 @@ ol.alphalowercase {
 }
 
 .table_beneficiary_sign_col_1_1,
-.table_beneficiary_sign_col_1_2 {
+.table_beneficiary_sign_col_1_2,
+.table_notary_sign_col_1_2,
+.table_notary_sign_col_2_2,
+.table_return_to_col_1_2,
+.table_return_to_col_2_2 {
   width: 50%;
 }
 
-.table_cell_top_line {
-  border-top: 1px solid;
+
+.table_signature_state_col_1_3,
+.table_signature_state_col_3_3 {
+  width: 45%;
+}
+
+.table_signature_state_col_2_3 {
+  width: 10%;
 }
 </style>
 
@@ -456,8 +482,13 @@ if ($beneficiaryMiddleName == '') {
 // Benificiary Mailing Address Inline
 if ($beneficiary_address_street_2 == '') {
     $beneficiaryAddressInline = $beneficiary_address_street_1 . ', ' . $beneficiary_address_city . ', ' . $beneficiary_address_state . ', ' . $beneficiary_address_zip;
+
+    $beneficiaryAddressInlineTraditional = $beneficiary_address_street_1 . ',<br>' . $beneficiary_address_city . ', ' . $beneficiary_address_state . ', ' . $beneficiary_address_zip;
 } else {
     $beneficiaryAddressInline = $beneficiary_address_street_1 . ', ' . $beneficiary_address_street_2 . ', ' . $beneficiary_address_city . ', ' . $beneficiary_address_state . ', ' . $beneficiary_address_zip;
+
+    $beneficiaryAddressInlineTraditional = $beneficiary_address_street_1 . ', ' . $beneficiary_address_street_2 . ',<br>' . $beneficiary_address_city . ', ' . $beneficiary_address_state . ', ' . $beneficiary_address_zip;
+
 }
 
 // Benificiary County: Previous Section
@@ -771,49 +802,33 @@ $propertyLegalDescription = $joint_property_entries[0][3010];
     </div>
 
     <!-- -------------------------------------------------------------------------------------------- -->
-    <!-- SIGNATURE: Recipient Spouse, State fields -->
-    <!-- Variables:  -->
-    <?php
-// Beneficiary Name Full: Already Obtained
-// Property County
-$propertyCounty = $joint_property_entries[0][3009]['county'];
-?>
-    <!-- Output -->
+    <!-- SPACER -->
+    <div class="bs_spacer"></div>
 
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <!-- SECTION: SIGNATURE FIELD Recipient Spouse -->
+    <!-- Variables -->
+    <!-- $beneficiaryNameFull: Already Obtained -->
+
+    <!-- Output -->
     <table>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 "></td>
+        <td class="table_grantor_sign_col_1_2"><?php echo $leaveBlank ?></td>
+        <td class="table_grantor_sign_col_2_2 "></td>
       </tr>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 table_cell_top_line"><?php echo strtoupper($beneficiaryNameFull) ?>
+        <td class="table_grantor_sign_col_1_2"><?php echo $leaveBlank ?></td>
+        <td class="table_grantor_col_2_2 table_cell_top_line"><?php echo strtoupper($beneficiaryNameFull) ?>
         </td>
       </tr>
       <tr>
         <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
+        <td class="table_grantor_sign_col_2_2"><?php echo $leaveBlank ?></td>
       </tr>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 bs_text_italic">This instrument was prepared based on information
+        <td class="table_grantor_sign_col_1_2"><?php echo $leaveBlank ?></td>
+        <td class="table_grantor_sign_col_2_2 bs_text_italic">This instrument was prepared based on information
           furnished by the parties, and no independent title search has been made.</td>
-      </tr>
-      <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
-      </tr>
-      <tr>
-        <td class="table_beneficiary_sign_col_1_2">STATE OF TEXAS</td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
-      </tr>
-      <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
-      </tr>
-      <tr>
-        <td class="table_beneficiary_sign_col_1_2">COUNTY OF <?php echo strtoupper($propertyCounty) ?></td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
       </tr>
     </table>
 
@@ -822,57 +837,85 @@ $propertyCounty = $joint_property_entries[0][3009]['county'];
     <div class="bs_spacer"></div>
 
     <!-- -------------------------------------------------------------------------------------------- -->
-    <!-- NOTARY -->
-    <!-- Variables: NONE -->
-    <div class="indent_paragraph paragraph">This instrument was acknowledged before me on ______________________ by
-      <?php echo strtoupper($recipientSpouseName) ?>.
-    </div>
+    <!-- SECTION: SIGNATURE FIELD State -->
+    <!-- Variables -->
+    <!-- $jurisCounty: Already Obtained -->
+    <!-- Output -->
     <table>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 "><?php echo $leaveBlank ?></td>
+        <td class="table_signature_state_col_1_3"><span class="bs_fontsize_normal">STATE OF TEXAS</span></td>
+        <td class="table_signature_state_col_2_3 bs_text_align_center"><span class="bs_fontsize_normal">&sect;</span>
+        </td>
+        <td class="table_signature_state_col_3_3"><?php echo $leaveBlank ?></td>
       </tr>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 "><?php echo $leaveBlank ?></td>
+        <td class="table_signature_state_col_1_3"><?php echo $leaveBlank ?></td>
+        <td class="table_signature_state_col_2_3"><?php echo $leaveBlank ?></td>
+        <td class="table_signature_state_col_3_3"><?php echo $leaveBlank ?></td>
       </tr>
       <tr>
-        <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-        <td class="table_beneficiary_sign_col_2_2 "><?php echo $leaveBlank ?></td>
+        <td class="table_signature_state_col_1_3"><span class="bs_fontsize_normal">COUNTY OF
+            <?php echo strtoupper($jurisCounty) ?></span></td>
+        <td class="table_signature_state_col_2_3 bs_text_align_center"><span class="bs_fontsize_normal">&sect;</span>
+        </td>
+        <td class="table_signature_state_col_3_3"><?php echo $leaveBlank ?></td>
       </tr>
-      <tr>
-        <td class="table_beneficiary_sign_col_1_2 table_cell_top_line">Notary Public, State of Texas</td>
-        <td class="table_beneficiary_sign_col_2_2"><?php echo $leaveBlank ?></td>
-      </tr>
-
     </table>
 
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <!-- SPACER -->
+    <div class="bs_spacer"></div>
+
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <!-- SECTION: NOTARY Date -->
+    <!-- Variables:None -->
+    <!-- Output -->
+    <div class="indent_paragraph paragraph">This instrument was acknowledged before me on ______________________ by
+      <?php echo strtoupper($granteeNameFull) ?>.
+    </div>
+
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <!-- SPACER -->
+    <div class="bs_spacer"></div>
+    <div class="bs_spacer"></div>
+    <div class="bs_spacer"></div>
+
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <!-- SECTION: NOTARY Signature -->
+    <!-- Variables:None -->
+    <!-- Output -->
+    <table>
+      <tr>
+        <td class="table_notary_sign_col_1_2 table_cell_top_line">Notary Public, State of Texas</td>
+        <td class="table_notary_sign_col_2_2"><?php echo $leaveBlank ?></td>
+      </tr>
+    </table>
     <!-- -------------------------------------------------------------------------------------------- -->
     <!-- PAGEBREAK -->
     <pagebreak>
 
 
       <!-- -------------------------------------------------------------------------------------------- -->
-      <!-- RETURN TO -->
+      <!-- SECTION: RETURN TO -->
       <!-- Variables -->
-      <!-- Beneficiary Full Name: Aleady Obtained -->
-      <!-- Beneficiary Address Inline: Aleady Obtained -->
-
+      <!-- $beneficiaryNameFull: Already Obtained -->
+      <!-- $beneficiaryMailingAddress: Already Obtained -->
+      <!-- Output -->
 
       <table>
         <tr>
-          <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-          <td class="table_beneficiary_sign_col_2_2 "><span class="bs_text_bold"> AFTER RECORDING RETURN TO:
+          <td class="table_return_to_col_1_2"><?php echo $leaveBlank ?></td>
+          <td class="table_return_to_col_2_2 "><span class="bs_text_bold"> AFTER RECORDING RETURN TO:
             </span></td>
         </tr>
         <tr>
-          <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-          <td class="table_beneficiary_sign_col_2_2"><?php echo strtoupper($beneficiaryNameFull) ?>
+          <td class="table_return_to_col_1_2"><?php echo $leaveBlank ?></td>
+          <td class="table_return_to_col_2_2"><?php echo strtoupper($beneficiaryNameFull) ?>
           </td>
         </tr>
         <tr>
-          <td class="table_beneficiary_sign_col_1_2"><?php echo $leaveBlank ?></td>
-          <td class="table_beneficiary_sign_col_2_2"><?php echo strtoupper($beneficiaryAddressInline) ?></td>
+          <td class="table_return_to_col_1_2"><?php echo $leaveBlank ?></td>
+          <td class="table_return_to_col_2_2"><?php echo strtoupper($beneficiaryAddressInlineTraditional) ?></td>
         </tr>
       </table>
       <!---- END OF DOCUMENT ---->
