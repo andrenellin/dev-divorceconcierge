@@ -516,27 +516,8 @@ $originalNoteDate = strtotime($joint_property_entries[0][3040]);
 $originalNoteDateFormatted = date('F j, Y', $originalNoteDate);
 // Original Principal Amount
 $originalNoteAmount = $joint_property_entries[0][3005];
-// Who is on the note [Me, My Spouse, Both]
-if ($joint_property_entries[0][3006] == 'Both') {
-    $originalGrantorNames = $petitionerNameFull . ' and ' . $respondentNameFull;
-}
-;
-if ($joint_property_entries[0][3006] == 'Me') {
-    $originalGrantorNames = $petitionerNameFull;
-} else {
-    $originalGrantorNames = $respondentNameFull;
-}
+// Who is on the NEW note [Me, My Spouse, Both] ALREADY OBTAINED
 
-// Payee of Original Note [Me, My Spouse, Both]
-if ($joint_property_entries[0][3007] == 'Both') {
-    $originalBeneficiaryNames = $petitionerNameFull . ' and ' . $respondentNameFull;
-}
-;
-if ($joint_property_entries[0][3007] == 'Me') {
-    $originalBeneficiaryNames = $petitionerNameFull;
-} else {
-    $originalBeneficiaryNames = $respondentNameFull;
-}
 // Recording Information County
 $countyOfRecord = $joint_property_entries[0][3008];
 
@@ -550,9 +531,9 @@ $propertyLegalDescription = $joint_property_entries[0][3010];
   </div>
   <div class="indent_paragraph paragraph">Original principal amount: $ <?php echo strtoupper($originalNoteAmount) ?>
   </div>
-  <div class="indent_paragraph paragraph">Maker and Grantor: <?php echo strtoupper($originalGrantorNames) ?>
+  <div class="indent_paragraph paragraph">Maker and Grantor: <?php echo strtoupper($grantorNameFull) ?>
   </div>
-  <div class="indent_paragraph paragraph">Payee and Beneficiary: <?php echo strtoupper($originalBeneficiaryNames) ?>
+  <div class="indent_paragraph paragraph">Payee and Beneficiary: <?php echo strtoupper($beneficiaryNameFull) ?>
   </div>
   <div class="indent_paragraph paragraph">Recording information: RECORDED IN THE DEED OF TRUST RECORDS OF
     <?php echo strtoupper($countyOfRecord) ?> COUNTY, TEXAS
